@@ -11,6 +11,7 @@ a=0.5;
 Nf=4096;
 N_bits=100;
 F0=2000;
+SNRdb=50;
 
 %1.
 %Creating a random bit sequence
@@ -130,6 +131,101 @@ semilogy(F_axis,Px_F);
 grid on;
 xlabel('frequency in Hz');
 title('periodogram of X (t)');
+
+%7.
+
+%variance of W(t)
+varW=1/Ts*10^(SNRdb/10);
+
+%constructing W(t)
+W_t=sqrt(varW)*randn(1,length(X_t));
+
+%recieved signal Y(t)
+Y_t=X_t + W_t;
+
+%8.
+%multiplying with the corresponding carriers to demodulate
+YI_t=Y_t.*(cos(2*pi*F0*t1));
+YQ_t=Y_t.*(sin(2*pi*F0*t1));
+
+%creating their periodograms
+PyI_F=(abs(Ts*fftshift(fft(YI_t,Nf))).^2)/(length(t1)*Ts);
+PyQ_F=(abs(Ts*fftshift(fft(YQ_t,Nf))).^2)/(length(t1)*Ts);
+
+
+%plotting the above
+figure;
+subplot(2,1,1);
+plot(t1,YI_t);
+grid on;
+xlabel('time in seconds')
+title('Y_I (t)');
+subplot(2,1,2);
+semilogy(F_axis,PyI_F);
+grid on;
+xlabel('frequency in Hz');
+title('periodogram of Y_I (t)');
+
+figure;
+subplot(2,1,1);
+plot(t2,YQ_t);
+grid on;
+xlabel('time in seconds')
+title('Y_Q (t)');
+subplot(2,1,2);
+semilogy(F_axis,PyQ_F);
+grid on;
+xlabel('frequency in Hz');
+title('periodogram of Y_Q (t)');
+
+%9.
+%making phi(-t)
+phi=fliplr(phi);
+t=-fliplr(t);
+
+tmp=t1;
+%aquiring convolution of the demodulated signals with phi
+[YI_n,t1]=conv_two_signals(YI_t,tmp,phi,t,Ts);
+[YQ_n,t2]=conv_two_signals(YQ_t,tmp,phi,t,Ts);
+
+
+%creating their periodograms
+PyIn_F=(abs(Ts*fftshift(fft(YI_n,Nf))).^2)/(length(t1)*Ts);
+PyQn_F=(abs(Ts*fftshift(fft(YQ_n,Nf))).^2)/(length(t2)*Ts);
+
+%plotting the above
+figure;
+subplot(2,1,1);
+plot(t1,YI_n);
+grid on;
+xlabel('time in seconds')
+title('Y_I n');
+subplot(2,1,2);
+semilogy(F_axis,PyIn_F);
+grid on;
+xlabel('frequency in Hz');
+title('periodogram of Y_I n');
+
+figure;
+subplot(2,1,1);
+plot(t2,YQ_n);
+grid on;
+xlabel('time in seconds')
+title('Y_Q n');
+subplot(2,1,2);
+semilogy(F_axis,PyQn_F);
+grid on;
+xlabel('frequency in Hz');
+title('periodogram of Y_Q n');
+
+%sampling YI_n and YQ_n at kT for k=0...N-1, in order to retrieve the symbols
+kt=[1
+
+Y=[YI_samples;YQ_samples;];
+
+scatterplot(transpose(Y));
+
+
 
 
 
