@@ -17,5 +17,6 @@ b = (sign(randn(3*N_bits, 1)) + 1)/2;
 
 %2.
 %aquiring the PSK symbols corresponding to the PSK sequence
-symbols = bits_to_8PSK(b);
+Xn = bits_to_8PSK(b);
 
+%3.
