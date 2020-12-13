@@ -1,20 +1,19 @@
-function Xm =map_bits_to_PSK_symbol(b)
+function gray =convert_to_gray(b,invert)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Xm = map_bits_to_PSK_symbol(b)                                                          
+% gray =convert_to_gray(b)                                                          
 % OUTPUT                                                                           
-%     Xm: PSK symbol Xm=[cos(2*pi*m/8),sin(2*pi*m/8)]T                                                
+%     gray: converted gray code output                                               
 %                                                                               
 % INPUT                                                                             
-%      b:bits to be translated to a symbol
+%      b:bits to be converted to gray code
 %                                                                               
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%the process bellow maps the b bit sequence to the gray code linked to a
-%PSK symbol
-map=convert_to_gray(b,0);
-
-m=bi2de(map,'left-msb');
-
-%the retrieved PSK symbol 
-Xm=[cos(2*pi*m/8);sin(2*pi*m/8)];
+gray=b;
+gray(2)= xor(b(1),b(2));
+if invert==0
+    gray(3)=xor(b(2),b(3));
+elseif invert==1
+    gray(3)= xor(gray(2),b(3));
+end
 
 end

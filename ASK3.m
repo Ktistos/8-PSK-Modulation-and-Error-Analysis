@@ -146,7 +146,7 @@ Y_t=X_t + W_t ;
 %8.
 %multiplying with the corresponding carriers to demodulate
 YI_t=Y_t.*(cos(2*pi*F0*t1));
-YQ_t=Y_t.*(sin(2*pi*F0*t1));
+YQ_t=Y_t.*(-sin(2*pi*F0*t1));
 
 %creating their periodograms
 PyI_F=(abs(Ts*fftshift(fft(YI_t,Nf))).^2)/(length(t1)*Ts);
@@ -227,8 +227,16 @@ YQ_sample=YQ_n(kT);
 
 %creating the sequence of the PSK symbols with noise
 Y=[YI_sample;YQ_sample];
-
+close all;
 %plotting each symbol
 scatterplot(Y');
 
+%11.
 
+[est_X, est_bit_seq] = detect_PSK_8(Y);
+
+%12.
+num_of_symbol_errors= symbol_errors(est_X,Xn);
+
+%13.
+num_of_bit_errors = bit_errors(est_bit_seq,b);

@@ -1,20 +1,16 @@
-function Xm =map_bits_to_PSK_symbol(b)
+function num_of_bit_errors = bit_errors(est_b_seq,b)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Xm = map_bits_to_PSK_symbol(b)                                                          
+% num_of_bit_errors=bit_errors(est_bit_seq,b)                                                        
 % OUTPUT                                                                           
-%     Xm: PSK symbol Xm=[cos(2*pi*m/8),sin(2*pi*m/8)]T                                                
+%     num_of_bit_errors: number of different bits between transmitted and decided bits                                                
 %                                                                               
 % INPUT                                                                             
-%      b:bits to be translated to a symbol
+%      est_bit_seq,b:bits to be compared
 %                                                                               
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%the process bellow maps the b bit sequence to the gray code linked to a
-%PSK symbol
-map=convert_to_gray(b,0);
-
-m=bi2de(map,'left-msb');
-
-%the retrieved PSK symbol 
-Xm=[cos(2*pi*m/8);sin(2*pi*m/8)];
-
+num_of_bit_errors=0;
+for count=1:length(b)
+    if b(count)~=est_b_seq(count)
+        num_of_bit_errors=num_of_bit_errors+1;
+    end
 end
