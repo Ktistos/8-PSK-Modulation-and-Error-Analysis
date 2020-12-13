@@ -11,7 +11,7 @@ a=0.5;
 Nf=4096;
 N_bits=100;
 F0=2000;
-SNRdb=50;
+SNRdb=20;
 
 %1.
 %Creating a random bit sequence
@@ -135,13 +135,13 @@ title('periodogram of X (t)');
 %7.
 
 %variance of W(t)
-varW=1/Ts*10^(SNRdb/10);
+varW=1/(Ts*(10^(SNRdb/10)));
 
 %constructing W(t)
 W_t=sqrt(varW)*randn(1,length(X_t));
 
 %recieved signal Y(t)
-Y_t=X_t + W_t;
+Y_t=X_t + W_t ;
 
 %8.
 %multiplying with the corresponding carriers to demodulate
@@ -218,14 +218,15 @@ grid on;
 xlabel('frequency in Hz');
 title('periodogram of Y_Q n');
 
-%sampling YI_n and YQ_n at kT for k=0...N-1, in order to retrieve the symbols
+%sampling z(t) at kT for k=0...N-1, in order to retrieve the symbols
+kT=[-t1(1)/Ts+1:over:((N_bits-1)*T - t1(1))/Ts+1];
 
+YI_sample=YI_n(kT);
+YQ_sample=YQ_n(kT);
 
-Y=[YI_samples;YQ_samples;];
+%creating the s
+Y=[YI_sample;YQ_sample];
 
-scatterplot(transpose(Y));
-
-
-
+scatterplot(Y');
 
 
