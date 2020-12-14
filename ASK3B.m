@@ -1,4 +1,5 @@
 clear all;
+close all; 
 
 %Parameter declaration and initialization
 T=0.001;
@@ -12,10 +13,18 @@ Nf=4096;
 N_bits=300;
 num_of_symbols=N_bits/3;
 F0=2000;
-K=1000;
+K=200;
 
+%1.
+
+%vector of SNRdb values to iterate and access for the measurements
 SNRdb=[-2:2:16];
+
+%2x10 matrix in the first line of which stores the experimental evaluation
+%of the symbol error probability and in the second line stores the experimental evaluation
+%of the bit error probability
 exp_prob=zeros(2,10);
+%vector to store the evaluated upper bound probability for each SNRdb
 upper_bound_prob=zeros(1,10);
 for index=1:length(SNRdb)
     num_of_symbol_errors=0;
@@ -83,21 +92,23 @@ for index=1:length(SNRdb)
         %creating the sequence of the PSK symbols with noise
         Y=[YI_sample;YQ_sample];
 
-        %11.
         [est_X, est_bit_seq] = detect_PSK_8(Y);
 
-        %12.
         num_of_symbol_errors=num_of_symbol_errors +  symbol_errors(est_X,Xn);
 
-        %13.
         num_of_bit_errors = num_of_bit_errors+bit_errors(est_bit_seq,b);
     end
+    
     SNR=10^(SNRdb(index)/10);
+    %storing the upper bound probability computed for the current SNRdb
     upper_bound_prob(index)=2*Q(sqrt(2*SNR)*sin(pi/8));
+    %storing the experimental probabilities computed for the current SNRdb
     exp_prob(1,index)=num_of_symbol_errors/(K*num_of_symbols);
     exp_prob(2,index)=num_of_bit_errors/(K*N_bits);
 end
 
+%plotting the results
+%2.
 figure;
 semilogy(SNRdb,exp_prob(1,:));
 hold on;
@@ -105,6 +116,9 @@ semilogy(SNRdb,upper_bound_prob);
 grid on;
 xlim([-2 17]);
 legend({'P(E)','upper bound'},'Location','northeast');
+xlabel('SNRdb');
+
+%3.
 figure;
 semilogy(SNRdb,exp_prob(2,:));
 hold on;
@@ -112,4 +126,5 @@ semilogy(SNRdb,exp_prob(1,:)/3);
 grid on;
 xlim([-2 16]);
 legend({'P(Ebit)','lower bound'},'Location','northeast');
+xlabel('SNRdb');
 

@@ -9,13 +9,14 @@ A=4;
 %roll of factor a
 a=0.5;
 Nf=4096;
-N_bits=100;
+num_of_symbols=100;
+N_bits=3*num_of_symbols;
 F0=2000;
 SNRdb=20;
 
 %1.
 %Creating a random bit sequence
-b = (sign(randn(3*N_bits, 1)) + 1)/2;
+b = (sign(randn(N_bits, 1)) + 1)/2;
 
 %2.
 %aquiring the PSK symbols corresponding to the PSK sequence
@@ -34,7 +35,7 @@ XIn_delta = 1/Ts * upsample(XIn, over);
 XQn_delta = 1/Ts * upsample(XQn, over);
 
 %time axis of the pulse trains
-t_d=0:Ts:((N_bits)*T)-Ts;
+t_d=0:Ts:((num_of_symbols)*T)-Ts;
 
 %aquiring convolution of pulse trains with phi
 [XI_n,t1]=conv_two_signals(XIn_delta,t_d,phi,t,Ts);  
@@ -220,7 +221,7 @@ title('periodogram of Y_Q n');
 
 %10.
 %sampling z(t) at kT for k=0...N-1, in order to retrieve the symbols
-kT=[-t1(1)/Ts+1:over:((N_bits-1)*T - t1(1))/Ts+1];
+kT=[-t1(1)/Ts+1:over:((num_of_symbols-1)*T - t1(1))/Ts+1];
 
 YI_sample=YI_n(kT);
 YQ_sample=YQ_n(kT);

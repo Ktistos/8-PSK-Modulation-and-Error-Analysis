@@ -6,7 +6,7 @@ function gray =convert_to_gray(b,invert)
 %                                                                               
 % INPUT                                                                             
 %      b:bits to be converted to gray code
-%                                                                               
+%      
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 gray(1)=b(1);
 gray(2)= xor(b(1),b(2));
