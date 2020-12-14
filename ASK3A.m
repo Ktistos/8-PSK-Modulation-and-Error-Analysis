@@ -1,5 +1,5 @@
 clear all;
-
+close all;
 %Parameter declaration and initialization
 T=0.001;
 over=10;

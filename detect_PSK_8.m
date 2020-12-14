@@ -27,7 +27,7 @@ for count=1:length(Y(1,:))
         %computing theoretical symbol
         xm=[cos(2*pi*(m-1)/8) sin(2*pi*(m-1)/8)];
         %computing dot product of the theoretical with the aquired symbols
-        temp=cos(2*pi*(m-1)/8) *Y(1,count) + sin(2*pi*(m-1)/8) * Y(2,count);
+        temp=xm * Y(:,count);
         %choosing the max dot product of them all
         if temp>max_dot_product
             max_dot_product=temp;

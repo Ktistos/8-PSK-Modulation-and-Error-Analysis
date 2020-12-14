@@ -12,7 +12,7 @@ Nf=4096;
 N_bits=300;
 num_of_symbols=N_bits/3;
 F0=2000;
-K=1000;
+K=200;
 
 SNRdb=[-2:2:16];
 exp_prob=zeros(2,10);
@@ -108,8 +108,8 @@ legend({'P(E)','upper bound'},'Location','northeast');
 figure;
 semilogy(SNRdb,exp_prob(2,:));
 hold on;
-semilogy(SNRdb,exp_prob(1,:)/3);
+semilogy(SNRdb,(2*upper_bound_prob)/5);
 grid on;
-xlim([-2 16]);
+xlim([-2 17]);
 legend({'P(Ebit)','lower bound'},'Location','northeast');
 
