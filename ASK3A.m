@@ -227,12 +227,11 @@ YQ_sample=YQ_n(kT);
 
 %creating the sequence of the PSK symbols with noise
 Y=[YI_sample;YQ_sample];
-close all;
+
 %plotting each symbol
 scatterplot(Y');
 
 %11.
-
 [est_X, est_bit_seq] = detect_PSK_8(Y);
 
 %12.
